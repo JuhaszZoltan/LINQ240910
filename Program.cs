@@ -1,6 +1,6 @@
 ﻿using LINQ240910;
 
-#region DOGS
+#region DOGS lista
 List<Dog> dogs =
 [
     new() //01
@@ -59,7 +59,6 @@ List<Dog> dogs =
  * kiválogatás
  * "halmaztételek"
 */
-
 
 #region megszámlálás
 // adott tulajdonságú elemek száma a kollekcióban
