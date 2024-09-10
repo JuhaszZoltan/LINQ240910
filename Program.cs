@@ -1,6 +1,6 @@
-﻿#region DOGS
-using LINQ240910;
+﻿using LINQ240910;
 
+#region DOGS
 List<Dog> dogs = new()
 {
     new() //01
