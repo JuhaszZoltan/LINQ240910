@@ -46,18 +46,20 @@ List<Dog> dogs =
 ];
 #endregion
 
-//milyen prog tételeket ismerünk?
-/*
- * megszámlálás
- * sorozatszámítás (összegzés) -> átlagszámítás
- * szélsőérték meghatározás (min, max) (hely és érték)
- * eldönttés
- * kiválasztás
- * lineáris keresés
- * "rendezések"
- * szétválogatás (csoportosítás)
- * kiválogatás
- * "halmaztételek"
+
+/* Milyen prog tételeket/nevezetes algoritmusokat ismerünk?
+ * 
+ * [x] megszámlálás
+ * [x] sorozatszámítás (összegzés) -> átlagszámítás
+ * [x] szélsőérték meghatározás (min, max) (hely és érték)
+ * [ ] eldönttés
+ * [ ] kiválasztás
+ * [ ] lineáris keresés
+ * [ ] "rendezések"
+ * [ ] szétválogatás (csoportosítás)
+ * [ ] kiválogatás
+ * 
+ * [ ] "halmaztételek"
 */
 
 #region megszámlálás
@@ -146,7 +148,7 @@ Console.WriteLine($"eredmény minby LINQ-val: {linqLfk.Name}");
 Console.WriteLine("-----------------------");
 #endregion
 
-//TODO::::
+//TODO:::
 #region keresés (és "kiválasztás")
 //dogs.First();
 //dogs.FirstOrDefault();
