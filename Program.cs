@@ -1,8 +1,8 @@
 ﻿using LINQ240910;
 
 #region DOGS
-List<Dog> dogs = new()
-{
+List<Dog> dogs =
+[
     new() //01
     {
         Name = "Kira",
@@ -31,8 +31,8 @@ List<Dog> dogs = new()
     {
         Name = "Thomas Edison",
         Birth = DateTime.Parse("2001-02-07"),
-        Sex = false,
-        Breed = "utcamix",
+        Sex = true,
+        Breed = "németjuhász",
         Weight = 40.3F,
     },
     new() //05
@@ -43,5 +43,46 @@ List<Dog> dogs = new()
         Breed = "palotapincsi",
         Weight = 4.2F,
     },
-};
+];
+#endregion
+
+//milyen prog tételeket ismerünk?
+/*
+ * megszámlálás
+ * "rendezések"
+ * sorozatszámítás (összegzés) -> átlagszámítás
+ * szélsőérték meghatározás (min, max) (hely és érték)
+ * eldönttés
+ * kiválasztás
+ * lineáris keresés
+ * szétválogatás (csoportosítás)
+ * kiválogatás
+ * "halmaztételek"
+*/
+
+
+#region megszámlálás
+// adott tulajdonságú elemek száma a kollekcióban
+// 3 évnél öregebb kutyák száma
+int haromEvnelIdosebb = 0;
+foreach (var dog in dogs)
+{
+    if (dog.Age >= 3) haromEvnelIdosebb++;
+}
+Console.WriteLine($"3 évnél idősebb kutyák száma: {haromEvnelIdosebb} db");
+
+int linqHaromEvnelIdosebb = dogs.Count(d => d.Age > 3);
+Console.WriteLine($"eredmény count LINQ-val: {linqHaromEvnelIdosebb}");
+
+// szukák száma
+int szukakSzama = 0;
+for (int i = 0; i < dogs.Count; i++)
+{
+    if (!dogs[i].Sex) szukakSzama++;
+}
+Console.WriteLine($"Szuka kutyák száma: {szukakSzama} db");
+int linqSzukakSzama = dogs.Count(d => !d.Sex);
+Console.WriteLine($"eredmény count LINQ-val: {linqSzukakSzama}");
+
+//TODO: összetett feltétel!
 #endregion
