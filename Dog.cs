@@ -8,5 +8,10 @@
         public string Breed { get; set; }
         public int Age => DateTime.Now.Year - Birth.Year;
         public float Weight { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name} ({Age} years old {Breed} {(Sex ? "boy" : "girl")})";
+        }
     }
 }

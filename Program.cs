@@ -46,15 +46,14 @@ List<Dog> dogs =
 ];
 #endregion
 
-
 /* Milyen prog tételeket/nevezetes algoritmusokat ismerünk?
  * 
  * [x] megszámlálás
  * [x] sorozatszámítás (összegzés) -> átlagszámítás
  * [x] szélsőérték meghatározás (min, max) (hely és érték)
+ * [ ] lineáris keresés
  * [ ] eldönttés
  * [ ] kiválasztás
- * [ ] lineáris keresés
  * [ ] "rendezések"
  * [ ] szétválogatás (csoportosítás)
  * [ ] kiválogatás
@@ -148,26 +147,96 @@ Console.WriteLine($"eredmény minby LINQ-val: {linqLfk.Name}");
 Console.WriteLine("-----------------------");
 #endregion
 
-//TODO:::
 #region keresés (és "kiválasztás")
-//dogs.First();
-//dogs.FirstOrDefault();
+var linqFrst = dogs.First(d => d.Breed == "németjuhász");
+Console.WriteLine($"a listában első nj: {linqFrst}");
+//ha van egyezés, akkor rendre az ELSŐ matching elementet adja vissza
+//ha nincs, "Sequence contains no matching element" exceptiont dob
 
-//dogs.Last();
-//dogs.LastOrDefault();
+var linqLst = dogs.Last(d => d.Breed == "németjuhász");
+Console.WriteLine($"a listában utolsó nj: {linqLst}");
+//ha van egyezés, akkor rendere az UTOLSÓ matching elementet adja vissza
+//ha nincs, "Sequence contains no matching element" exceptiont dob
 
-//dogs.Single();
-//dogs.SingleOrDefault();
+var linqSngl = dogs.Single(d => d.Breed == "németjuhász" && d.Age >= 20);
+Console.WriteLine($"a listában egyetlen 20 évesnél öregebb nj: {linqSngl}");
+//ha EGYETLEN egyezés van, akkor visszatér A matching elementel
+//ha TÖBB egyezés is *LENNE*, akkor "Sequence contains more than one matching element" exceptiont dob
+//ha nincs, "Sequence contains no matching element" exceptiont dob
 
-//dogs.Find()     <-- nem LINQ
-//dogs.FindAll()  <-- nem LINQ
+//object x = 10;
+//object y = "cica";
+//object z = new Dog();
+//Console.WriteLine((int)x + 2);
+
+var linqFrstOrDef = dogs.FirstOrDefault(d => d.Breed == "unicorn");
+Console.WriteLine($"az első unikornis a listában null?: {linqFrstOrDef is null}");
+//ha van egyezés, akkor rendre az ELSŐ matching elementet adja vissza
+//ha nincs találat, akkor ún. "default" értéket ad vissza, ami:
+//   VALUE (struct) type esetén *általában* zéró
+//   REFERENCE (class) type esetén mindig null
+
+//int[] numbers = { 11, 26, 3, 132, 26, 44, 30, 1862, 50 };
+//var res = numbers.FirstOrDefault(x => x % 200 == 0);
+//Console.WriteLine($"result: {res}");
+
+var linqLstOrDef = dogs.LastOrDefault(d => d.Breed == "tacskó");
+Console.WriteLine($"utolsó tacskó: {linqLstOrDef}");
+//ha van egyezés, akkor rendere az UTOLSÓ matching elementet adja vissza
+//ha nincs találat, akkor ún. "default" értéket ad vissza, ami:
+//   VALUE (struct) type esetén *általában* zéró
+//   REFERENCE (class) type esetén mindig null
+
+var linqSnglOrDef = dogs.SingleOrDefault(d => d.Breed == "pittbull");
+Console.WriteLine(linqSnglOrDef is null ? "nincs pittbull" : $"egyetlen pittbull: {linqSnglOrDef}");
+//ha EGYETLEN egyezés van, akkor visszatér A matching elementel
+//ha TÖBB egyezés is *LENNE*, akkor "Sequence contains more than one matching element" exceptiont dob
+//ha nincs találat, akkor ún. "default" értéket ad vissza, ami:
+//   VALUE (struct) type esetén *általában* zéró
+//   REFERENCE (class) type esetén mindig null
+
+//dogs.Find()     <-- nem LINQ ua. mint a FirstOrDefrault()
+//dogs.FindAll()  <-- nem LINQ ua. mint a Where()
+
 //IndexOf()       <-- nem LINQ
 
+////linker progtétel:
+//int kerIndex = 0;
+//while (kerIndex < dogs.Count && dogs[kerIndex].Breed != "pittbull") kerIndex++;
+//Console.WriteLine($"output: {(kerIndex < dogs.Count ? kerIndex : -1)}");
+
+var inst = dogs.FirstOrDefault(d => d.Breed == "pittbull");
+int indexOfInst = dogs.IndexOf(inst);
+Console.WriteLine($"első <condition> indexe: {indexOfInst}");
+//ha indexof esetén nincs találat a keresett példányra, akkor -1-el tér vissza (nem exceptiont dob!)
 Console.WriteLine("-----------------------");
 #endregion
 
 //TODO:::
 #region eldöntés
-//dogs.Any();
-//dogs.Contains() <-- nem LINQ
+var linqAny01 = dogs.Any(d => d.Breed == "pittbull");
+var linqAny02 = dogs.Any(d => d.Breed == "németjuhász");
+Console.WriteLine($"{(linqAny01 ? "van" : "nincs")} pittbull");
+Console.WriteLine($"{(linqAny02 ? "van" : "nincs")} németjuhász");
+//ha van legalább egy matching element -> True
+//ha nincs -> False
+//List.Exist(<condition>) <== gyakorlatilag ugyan ez
+
+var cont = dogs.Contains(linqFrst);
+Console.WriteLine($"a {linqFrst}-ot {(cont ? "tartalmazza" : "nem tartalmazza")} a lista");
+//contains paraméterben objektumot kap
+//ha a par obj reverenciát, vagy a par struct értéket tartalmazza a lista, akkor -> True
+//egyébként -> False
+
+var masikrex = new Dog()
+{
+    Name = "Rex",
+    Birth = DateTime.Parse("2014-04-20"),
+    Sex = true,
+    Breed = "németjuhász",
+};
+
+//mivel Dog REF type, hiába PONTOSAN UGYAN AZOK a tulajdonságai, mint a lista 1-es indexű elemének, ez "nem az a rex", ezért a contains false-t ad vissza.
+Console.WriteLine(dogs.Contains(masikrex));
+
 #endregion
