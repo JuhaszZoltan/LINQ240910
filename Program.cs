@@ -80,7 +80,7 @@ List<Dog> dogs =
  * [x] eldönttés
  * [x] "rendezések"
  * [x] kiválogatás
- * [ ] szétválogatás (csoportosítás)
+ * [x] szétválogatás (csoportosítás)
  * 
  * [ ] "halmaztételek"
 */
@@ -251,6 +251,13 @@ Console.WriteLine($"a {linqFrst}-ot {(cont ? "tartalmazza" : "nem tartalmazza")}
 //ha a par obj reverenciát, vagy a par struct értéket tartalmazza a lista, akkor -> True
 //egyébként -> False
 
+//akkor ad vissza TRUE-t, ha a kollekció minden elemére igaz a pred.
+var linqAll = dogs.All(d => d.Birth.Year > 1950);
+Console.WriteLine($"{(linqAll 
+    ? "minden kutya" 
+    : "van olyan kutya, aki nem")}" +
+    $" 1950 után született");
+
 var masikrex = new Dog()
 {
     Name = "Rex",
@@ -299,3 +306,34 @@ foreach (var dog in linqWhere)
     Console.WriteLine($"\t{dog}");
 }
 #endregion
+
+#region szétválogatás (csoportosítás)
+//IEnumerable<IGrouping<string, Dog>>
+var linqGB = dogs.GroupBy(d => d.Breed);
+Console.WriteLine("kutyusok csoportosítva fajta szerint");
+foreach (var group in linqGB)
+{
+    Console.WriteLine($"\t{group.Key} ({group.Count()} db)");
+    foreach (var dog in group.OrderBy(d => d.Name))
+    {
+        Console.WriteLine($"\t\t{dog}");
+    }
+}
+#endregion
+
+#region halmazműveleteket megvalósító LINQ függvények:
+//.Union();
+//.Intersect();
+//.Except();
+#endregion
+
+var linqSelectDistinct = dogs
+    .Select(d => d.Breed)
+    .Distinct()
+    .Order();
+
+Console.WriteLine("kutyafajták:");
+foreach (var breed in linqSelectDistinct)
+{
+    Console.WriteLine($"\t{breed}");
+}
