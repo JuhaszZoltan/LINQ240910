@@ -43,6 +43,30 @@ List<Dog> dogs =
         Breed = "palotapincsi",
         Weight = 4.2F,
     },
+    new() //06
+    {
+        Name = "Démon",
+        Birth = DateTime.Parse("2010-01-20"),
+        Sex = true,
+        Breed = "kaukázusi farkasölő",
+        Weight = 82.0F,
+    },
+    new() //07
+    {
+        Name = "Nyomiii",
+        Birth = DateTime.Parse("2011-02-21"),
+        Sex = false,
+        Breed = "németjuhász",
+        Weight = 32.3F,
+    },
+    new() //08
+    {
+        Name = "Rongy",
+        Birth = DateTime.Parse("2022-06-10"),
+        Sex = false,
+        Breed = "palotapincsi",
+        Weight = 7.3F,
+    },
 ];
 #endregion
 
@@ -51,12 +75,12 @@ List<Dog> dogs =
  * [x] megszámlálás
  * [x] sorozatszámítás (összegzés) -> átlagszámítás
  * [x] szélsőérték meghatározás (min, max) (hely és érték)
- * [ ] lineáris keresés
- * [ ] eldönttés
- * [ ] kiválasztás
- * [ ] "rendezések"
+ * [x] lineáris keresés
+ * [x] kiválasztás
+ * [x] eldönttés
+ * [x] "rendezések"
+ * [x] kiválogatás
  * [ ] szétválogatás (csoportosítás)
- * [ ] kiválogatás
  * 
  * [ ] "halmaztételek"
 */
@@ -212,7 +236,6 @@ Console.WriteLine($"első <condition> indexe: {indexOfInst}");
 Console.WriteLine("-----------------------");
 #endregion
 
-//TODO:::
 #region eldöntés
 var linqAny01 = dogs.Any(d => d.Breed == "pittbull");
 var linqAny02 = dogs.Any(d => d.Breed == "németjuhász");
@@ -238,5 +261,41 @@ var masikrex = new Dog()
 
 //mivel Dog REF type, hiába PONTOSAN UGYAN AZOK a tulajdonságai, mint a lista 1-es indexű elemének, ez "nem az a rex", ezért a contains false-t ad vissza.
 Console.WriteLine(dogs.Contains(masikrex));
+#endregion
 
+#region rendezés
+//.Sort() <-- ez 'helyben' rendez, az elemek sorrendje megváltozik az eredeti adatszerkezetben
+
+// az [orderby, orderbydescending, order, orderdescending] nem helyben rendez, hanem készül a kollekcióról egy olyan projekció, amiben az elemek sorrendje eltér (tehát az eredeti adatszerkezet elemeinek sorrendje NEM fog változni)
+
+Console.WriteLine("---kutyusok névsorrendben---");
+var linqOBNames = dogs.OrderBy(d => d.Name);
+foreach (var dog in linqOBNames)
+{
+    Console.WriteLine($"[{dogs.IndexOf(dog)}] - {dog}");
+}
+
+Console.WriteLine("---kutyusok életkor szerint csökkenőben---");
+var linqOBDAges = dogs.OrderByDescending(d => d.Age);
+foreach (var dog in linqOBDAges)
+{
+    Console.WriteLine($"[{dogs.IndexOf(dog)}] - {dog}");
+}
+
+// van ThenBy(x => x) -> olyanon lehet lefuttatni, ami IOrderedEnumerable<T> kollekció, és a másodlagos rendezési szempontot tudod benne beállítani. [.ThenByDescanding(x => x)]
+
+// Order() & OrderDescending()
+// <- akkor használjuk, ha a kollekció elemei nem összetett adatszerkezetek
+#endregion
+
+#region kiválogatás
+Console.WriteLine("-------------");
+Console.WriteLine("2015 után született kutyák:");
+var linqWhere = dogs
+    .Where(d => d.Birth.Year >= 2015)
+    .OrderBy(d => d.Age);
+foreach (var dog in linqWhere)
+{
+    Console.WriteLine($"\t{dog}");
+}
 #endregion
